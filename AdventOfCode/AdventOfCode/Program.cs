@@ -1,4 +1,6 @@
-﻿const string pathData = "";
+﻿using System.Text.RegularExpressions;
+
+const string pathData = "C:\\Users\\user\\Documents\\GitHub\\AdventOfCode2024\\dataset";
 /////////////////////////////////////////////////////////////////// 1.1 ///////////////////////////////////////////////
 
 List<int> listOne = new List<int>();
@@ -120,5 +122,59 @@ bool GoodReporDampener(List<int> numbers, bool firstTime)
     return true;
 }
 Console.WriteLine("2. Part two: " + sumGoodReport);
+
+/////////////////////////////////////////////////////////////////// 3.1 ///////////////////////////////////////////////
+Regex regex = new Regex(@"mul\(\d+,\d+\)");
+long result = 0;
+
+lines = File.ReadLines(pathData + "\\dataset_three.txt");
+foreach (var line in lines)
+{
+    MatchCollection match = regex.Matches(line);
+    for (int i = 0; i < match.Count; i++)
+    {
+        if (match[i] != null)
+        {
+            Regex getNumbers = new Regex(@"\d+");
+            MatchCollection numbers = getNumbers.Matches(match[i].ToString());
+            result += Convert.ToInt32(numbers[0].Value) * Convert.ToInt32(numbers[1].Value);
+        }
+        
+    }
+}
+
+Console.WriteLine("\n3. Part one: " + result);
+
+/////////////////////////////////////////////////////////////////// 3.2 ///////////////////////////////////////////////
+regex = new Regex(@"mul\(\d+,\d+\)|do\(\)|don't\(\)");
+bool isActivate = true;
+result = 0;
+foreach (var line in lines)
+{
+    MatchCollection match = regex.Matches(line);
+    for (int i = 0; i < match.Count; i++)
+    {
+        if (match[i] != null)
+        {
+            if (match[i].Value == "do()") 
+            {
+                isActivate = true;
+            }
+            else if (match[i].Value == "don't()")
+            {
+                isActivate = false;
+            }
+            else if (isActivate)
+            {
+                Regex getNumbers = new Regex(@"\d+");
+                MatchCollection numbers = getNumbers.Matches(match[i].ToString());
+                result += Convert.ToInt32(numbers[0].Value) * Convert.ToInt32(numbers[1].Value);
+            }
+        }
+
+    }
+}
+
+Console.WriteLine("3. Part two: " + result);
 Console.ReadLine();
 
