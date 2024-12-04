@@ -176,5 +176,99 @@ foreach (var line in lines)
 }
 
 Console.WriteLine("3. Part two: " + result);
+
+/////////////////////////////////////////////////////////////////// 4.1 ///////////////////////////////////////////////
+lines = null;
+lines = File.ReadLines(pathData + "\\dataset_four.txt");
+int total = 0;
+char[,] values;
+values = new char[lines.Count(), lines.First().Length];
+for (int i = 0;i < lines.Count();i++)
+{
+    string line = lines.Skip(i).First();
+    for (int j = 0; j < line.Length; j++)
+    {
+        values[i,j] = line[j];
+    }
+}
+for (int i = 0; i < lines.Count(); i++)
+{
+    for (int j = 0;j < lines.First().Length; j++)
+    {
+        if (values[i, j] == 'X')
+        {
+                if (IfXams(i , j, 1, 1, "XMAS", 1)) total++;
+                if (IfXams(i, j, -1, -1, "XMAS", 1)) total++;
+                if (IfXams(i, j, -1, 1, "XMAS", 1)) total++;
+                if (IfXams(i, j, 1, -1, "XMAS", 1)) total++;
+                if (IfXams(i, j, 0, 1, "XMAS", 1)) total++;
+                if (IfXams(i, j, 0, -1, "XMAS", 1)) total++;
+                if (IfXams(i, j, 1, 0, "XMAS", 1)) total++;
+                if (IfXams(i, j, -1, 0, "XMAS", 1)) total++;
+        }
+    }
+}
+Console.WriteLine("\n4. Part one: " + total);
+/////////////////////////////////////////////////////////////////// 4.2 ///////////////////////////////////////////////
+total = 0;
+for (int i = 0; i < lines.Count(); i++)
+{
+    for (int j = 0; j < lines.First().Length; j++)
+    {
+        if (values[i, j] == 'M')
+        {
+            if (IfXams(i, j, 1, 1, "AS", 0))
+            {
+                if (values[i, j+2] == 'M')
+                {
+                    if (IfXams(i, j + 2, 1, -1, "AS", 0)) total++;
+                }
+                if (values[i + 2, j] == 'M')
+                {
+                    if (IfXams(i + 2, j, -1, 1, "AS", 0)) total++;
+                }
+            }
+            if (IfXams(i, j, 1, -1, "AS", 0))
+            {
+                if (values[i+ 2, j] == 'M')
+                {
+                    if (IfXams(i + 2, j, -1, -1, "AS", 0)) total++;
+                }
+            }
+            if (IfXams(i, j, -1, 1, "AS", 0))
+            {
+                if (values[i, j +2] == 'M')
+                {
+                    if (IfXams(i, j + 2, -1, -1, "AS", 0)) total++;
+                }
+            }
+        }
+    }
+}
+bool IfXams(int x, int y, int xModifier, int yModifier, string letterToFound, int placeLetter)
+{
+    if (placeLetter == letterToFound.Length)
+    {
+        return true;
+    }
+    try
+    {
+        if (values[x + xModifier, y + yModifier] == letterToFound[placeLetter])
+        {
+            if (IfXams(x + xModifier, y + yModifier, xModifier, yModifier, letterToFound, placeLetter + 1))
+            {
+                return true;
+            }
+        }
+    }
+    catch 
+    {
+        return false;
+    }
+    
+    return false;
+}
+Console.WriteLine("4. Part two: " + total);
+
 Console.ReadLine();
 
