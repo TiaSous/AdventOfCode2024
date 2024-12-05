@@ -1,13 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 
 const string pathData = "C:\\Users\\user\\Documents\\GitHub\\AdventOfCode2024\\dataset";
+int total = 0;
+var lines = File.ReadLines(pathData + "\\dataset_one.txt");
 /////////////////////////////////////////////////////////////////// 1.1 ///////////////////////////////////////////////
-
 List<int> listOne = new List<int>();
 List<int> listTwo = new List<int>();
-int diff = 0;
-
-var lines = File.ReadLines(pathData + "\\dataset_one.txt");
 foreach (var line in lines)
 {
     string[] numbers = line.Split(' ');
@@ -20,14 +18,14 @@ while (listOne.Count > 0)
     int numberListOne = listOne.Min();
     int numberListTwo = listTwo.Min();
 
-    diff += Math.Abs(numberListOne - numberListTwo);
+    total += Math.Abs(numberListOne - numberListTwo);
     listOne.Remove(numberListOne);
     listTwo.Remove(numberListTwo);
 }
 
-Console.WriteLine("1. Part one: " + diff);
+Console.WriteLine("1. Part one: " + total);
 /////////////////////////////////////////////////////////////////// 1.2 ///////////////////////////////////////////////
-int diff2 = 0;
+total = 0;
 listOne.Clear();
 listTwo.Clear();
 foreach (var line in lines)
@@ -40,21 +38,21 @@ while (listOne.Count > 0)
 {
     int numberList = listOne.Min();
     int two = listTwo.Where(x => x == numberList).Count();
-    diff2 += two * numberList;
+    total += two * numberList;
     listOne.Remove(numberList);
 }
-Console.WriteLine("1. Part two: " + diff2);
+Console.WriteLine("1. Part two: " + total);
 
 /////////////////////////////////////////////////////////////////// 2.1 ///////////////////////////////////////////////
 lines = File.ReadLines(pathData + "\\dataset_two.txt");
-int sumGoodReport = 0;
+total = 0;
 
 foreach (var line in lines)
 {
     int[] numbers = Array.ConvertAll(line.Split(' '), v => int.Parse(v));
     if (GoodReport(numbers))
     {
-        sumGoodReport++;
+        total++;
     }
 }
 bool GoodReport(int[] numbers)
@@ -73,10 +71,10 @@ bool GoodReport(int[] numbers)
     return true;
 }
 
-Console.WriteLine("\n2. Part one: " + sumGoodReport);
+Console.WriteLine("\n2. Part one: " + total);
 
 /////////////////////////////////////////////////////////////////// 2.2 ///////////////////////////////////////////////
-sumGoodReport = 0;
+total = 0;
 List<bool> test = new List<bool>();
 foreach (var line in lines)
 {
@@ -88,7 +86,7 @@ foreach (var line in lines)
      .ToList();
     if (GoodReporDampener(numbers, true))
     {
-        sumGoodReport++;
+        total++;
     }
 }
 
@@ -121,11 +119,11 @@ bool GoodReporDampener(List<int> numbers, bool firstTime)
     }
     return true;
 }
-Console.WriteLine("2. Part two: " + sumGoodReport);
+Console.WriteLine("2. Part two: " + total);
 
 /////////////////////////////////////////////////////////////////// 3.1 ///////////////////////////////////////////////
 Regex regex = new Regex(@"mul\(\d+,\d+\)");
-long result = 0;
+total = 0;
 
 lines = File.ReadLines(pathData + "\\dataset_three.txt");
 foreach (var line in lines)
@@ -137,18 +135,18 @@ foreach (var line in lines)
         {
             Regex getNumbers = new Regex(@"\d+");
             MatchCollection numbers = getNumbers.Matches(match[i].ToString());
-            result += Convert.ToInt32(numbers[0].Value) * Convert.ToInt32(numbers[1].Value);
+            total += Convert.ToInt32(numbers[0].Value) * Convert.ToInt32(numbers[1].Value);
         }
         
     }
 }
 
-Console.WriteLine("\n3. Part one: " + result);
+Console.WriteLine("\n3. Part one: " + total);
 
 /////////////////////////////////////////////////////////////////// 3.2 ///////////////////////////////////////////////
 regex = new Regex(@"mul\(\d+,\d+\)|do\(\)|don't\(\)");
 bool isActivate = true;
-result = 0;
+total = 0;
 foreach (var line in lines)
 {
     MatchCollection match = regex.Matches(line);
@@ -168,19 +166,19 @@ foreach (var line in lines)
             {
                 Regex getNumbers = new Regex(@"\d+");
                 MatchCollection numbers = getNumbers.Matches(match[i].ToString());
-                result += Convert.ToInt32(numbers[0].Value) * Convert.ToInt32(numbers[1].Value);
+                total += Convert.ToInt32(numbers[0].Value) * Convert.ToInt32(numbers[1].Value);
             }
         }
 
     }
 }
 
-Console.WriteLine("3. Part two: " + result);
+Console.WriteLine("3. Part two: " + total);
 
 /////////////////////////////////////////////////////////////////// 4.1 ///////////////////////////////////////////////
 lines = null;
 lines = File.ReadLines(pathData + "\\dataset_four.txt");
-int total = 0;
+total = 0;
 char[,] values;
 values = new char[lines.Count(), lines.First().Length];
 for (int i = 0;i < lines.Count();i++)
@@ -269,6 +267,9 @@ bool IfXams(int x, int y, int xModifier, int yModifier, string letterToFound, in
     return false;
 }
 Console.WriteLine("4. Part two: " + total);
-
+/////////////////////////////////////////////////////////////////// 4.2 ///////////////////////////////////////////////
+total = 0;
+lines = null;
+lines = File.ReadLines(pathData + "\\dataset_five_rules.txt");
 Console.ReadLine();
 
